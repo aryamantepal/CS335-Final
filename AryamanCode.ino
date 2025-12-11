@@ -37,7 +37,7 @@ void setup() {
   Serial.println("========================================");
   Serial.println("   CAMP HALF-BLOOD SORTING SYSTEM");
   Serial.println("========================================\n");
-
+  Wire.begin();
   // Setup button pin with internal pullup
   pinMode(BUTTON_PIN, INPUT_PULLUP);
 
@@ -53,6 +53,17 @@ void setup() {
   Serial.println("Press the button to start scanning!\n");
   delay(1000);
 }
+
+void sendCabinToLCD(String cabin) {
+  Wire.beginTransmission(0x04);
+  Wire.write((uint8_t)cabin.length());
+  Wire.write(cabin.c_str());       // then send full string
+  Wire.endTransmission();
+
+  Serial.print("Sent to LCD: ");
+  Serial.println(cabin);
+}
+
 
 Cabin classifyCabin(int r, int g, int b) {
   // Calculate color properties
@@ -247,6 +258,14 @@ void loop() {
       Serial.println(" ★");
       Serial.println(getCabinDescription(detected));
       Serial.println("========================================\n");
+      String cabinName = getCabinName(detected);
+      Serial.print("Cabin detected: ");
+      Serial.println(cabinName);
+
+      Serial.println("About to send cabin over I2C...");
+      sendCabinToLCD(cabinName);
+      Serial.println("Sent to LCD!");
+
       Serial.println("Press button to scan again...\n");
     }
   }
