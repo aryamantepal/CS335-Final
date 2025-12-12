@@ -156,23 +156,21 @@ void drawBootAnimation() {
 
   drawCenteredText("Welcome to", 40, 2, HX8357_WHITE);
   drawCenteredText("CAMP HALF-BLOOD", 70, 3, HX8357_ORANGE);
-  delay(800);
+  delay(200);
 
   drawCenteredText("Forging your destiny...", 110, 2, HX8357_YELLOW);
-  delay(800);
+  delay(300);
 
   int barY = 180;
   int barH = 20;
   int margin = 40;
   tft.drawRect(margin, barY, SCREEN_W - 2 * margin, barH, HX8357_WHITE);
 
-  for (int pass = 0; pass < 3; pass++) {
-    for (int x = margin + 2; x < SCREEN_W - margin - 2; x += 8) {
-      tft.fillRect(margin + 1, barY + 1, SCREEN_W - 2 * margin - 2, barH - 2, HX8357_BLACK);
-      tft.fillRect(x, barY + 2, 40, barH - 4, HX8357_ORANGE);
-      delay(18);
-    }
+  for (int x = margin + 2; x < SCREEN_W - margin - 40; x += 12) {
+  tft.fillRect(x, barY + 2, 40, barH - 4, HX8357_ORANGE);
+  delay(6);
   }
+
 
   drawCenteredText("Consulting the Fates...", 220, 2, HX8357_LIGHTGREY);
   delay(1000);
@@ -205,6 +203,7 @@ void revealGod(GodId id) {
   drawCenteredText("Your immortal parent is...", 20, 2, HX8357_WHITE);
   drawCenteredText(g.name, 50, 4, g.accentColor);
   drawCenteredText(g.tagline, SCREEN_H - 40, 2, HX8357_WHITE);
+  drawCenteredText("Press button to try again", SCREEN_H - 18, 1, HX8357_LIGHTGREY);
 }
 
 // ==================== I2C RECEIVE HANDLER ====================
