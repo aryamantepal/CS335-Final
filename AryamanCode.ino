@@ -20,6 +20,7 @@ enum Cabin {
 
 // ==================== BUTTON SETUP ====================
 const int BUTTON_PIN = 2;  // Change this to your button pin
+const int SPEAKER_PIN = 3;
 bool lastButtonState = HIGH;
 bool scanning = false;
 unsigned long scanStartTime = 0;
@@ -40,11 +41,13 @@ void setup() {
   Wire.begin();
   // Setup button pin with internal pullup
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(SPEAKER_PIN, OUTPUT);
+  digitalWrite(SPEAKER_PIN, LOW);
 
   if (tcs.begin()) {
     Serial.println("[OK] Color sensor initialized");
   } else {
-    Serial.println("[ERROR] TCS34725 not found!");
+    Serial.println("[ERROR] TCS34725 not found!"); 
     Serial.println("Check I2C connections (SDA/SCL)");
     while (1);
   }
@@ -178,6 +181,12 @@ String getCabinDescription(Cabin cabin) {
   }
 }
 
+void beep() {
+  digitalWrite(SPEAKER_PIN, HIGH);
+  delay(20);
+  digitalWrite(SPEAKER_PIN, LOW);
+}
+
 void loop() {
   // Read button state
   bool buttonState = digitalRead(BUTTON_PIN);
@@ -229,6 +238,7 @@ void loop() {
         Serial.print("Scanning... ");
         Serial.print(secondsLeft);
         Serial.println(" seconds remaining");
+        beep();
       }
       
       delay(50);  // Small delay between readings
